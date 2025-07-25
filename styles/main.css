@@ -1,0 +1,982 @@
+/* Youtify - Modern Clean Design */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Modern Color Variables - Clean Professional Theme */
+:root {
+    --primary: #1DB954;
+    --primary-dark: #1ed760;
+    --primary-light: #1db954;
+    --secondary: #191414;
+    --accent: #1DB954;
+    --background: #ffffff;
+    --background-secondary: #f8f9fa;
+    --background-tertiary: #f1f3f4;
+    --text-primary: #191414;
+    --text-secondary: #6c757d;
+    --text-muted: #9ca3af;
+    --border: #e9ecef;
+    --border-light: #f1f3f4;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --shadow-heavy: rgba(0, 0, 0, 0.25);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+    --validated: #10b981;
+    --pending: #f59e0b;
+    --not-found: #ef4444;
+
+    /* Animation and transition variables */
+    --transition-fast: 0.15s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --border-radius: 8px;
+    --border-radius-large: 12px;
+}
+
+/* Global styles */
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Body styling */
+body {
+    background: var(--background);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+/* Hide Streamlit branding */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Main header styling */
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+}
+
+.main-header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.main-header .logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+}
+
+.main-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.main-header p {
+    font-size: 1rem;
+    margin: 0.25rem 0 0 0;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Feature cards */
+.feature-card {
+    background: var(--background);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px var(--shadow);
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+    border-color: var(--primary);
+}
+
+.feature-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.feature-card ul {
+    color: var(--text-secondary);
+    padding-left: 1.5rem;
+}
+
+.feature-card li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Confidence indicators */
+.confidence-high {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.confidence-medium {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.confidence-low {
+    color: var(--error);
+    font-weight: 600;
+}
+
+/* Button styling */
+.stButton > button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.stButton > button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+}
+
+.stButton > button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+/* Primary button variant */
+.stButton > button[kind="primary"] {
+    background: var(--primary);
+    color: white;
+}
+
+.stButton > button[kind="primary"]:hover {
+    background: var(--primary-dark);
+}
+
+/* Secondary button variant */
+.stButton > button[kind="secondary"] {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.stButton > button[kind="secondary"]:hover {
+    background: var(--background-secondary);
+    border-color: var(--primary);
+}
+
+/* Progress bars */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 4px;
+}
+
+/* Modern input styling */
+.stTextInput > div > div > input {
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+    outline: none;
+}
+
+.stTextInput > div > div > input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Select box styling */
+.stSelectbox > div > div > select {
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.stSelectbox > div > div > select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+    outline: none;
+}
+
+/* Slider styling */
+.stSlider > div > div > div > div {
+    background: var(--primary);
+}
+
+/* Checkbox styling */
+.stCheckbox > label > div {
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.stCheckbox > label > div[data-checked="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Sidebar styling */
+.css-1d391kg {
+    background: var(--background-secondary);
+}
+
+/* Success/Info/Warning/Error messages */
+.stSuccess {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success);
+    border-radius: 8px;
+}
+
+.stInfo {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid var(--info);
+    border-radius: 8px;
+}
+
+.stWarning {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid var(--warning);
+    border-radius: 8px;
+}
+
+.stError {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--error);
+    border-radius: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 2rem;
+    }
+    
+    .main-header p {
+        font-size: 1rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Modern loading animations */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: modernSpin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes modernSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Pulse animation for loading states */
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Skeleton loading animation */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Song card styling */
+.song-card {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 0.75rem 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.song-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 2rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .main-header h1 {
+        font-size: 2rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .song-card {
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+
+    .stButton > button {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    /* Stack columns on mobile */
+    .stColumns > div {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .feature-card {
+        padding: 1rem;
+    }
+
+    .song-card {
+        padding: 0.75rem;
+    }
+
+    .stButton > button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 20px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #1a1a1a;
+        --background-secondary: #2d2d2d;
+        --background-tertiary: #404040;
+        --text-primary: #ffffff;
+        --text-secondary: #cccccc;
+        --text-muted: #9ca3af;
+        --border: #404040;
+        --border-light: #525252;
+    }
+
+    .feature-card,
+    .modern-song-card,
+    .song-card {
+        background: var(--background-secondary);
+        border-color: var(--border);
+    }
+
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > select {
+        background: var(--background-secondary);
+        color: var(--text-primary);
+        border-color: var(--border);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    :root {
+        --primary: #1DB954;
+        --text-primary: #000000;
+        --border: #000000;
+    }
+
+    .feature-card,
+    .modern-song-card,
+    .song-card {
+        border: 2px solid #000000;
+    }
+
+    .stButton > button {
+        border: 2px solid #000000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .loading-spinner {
+        animation: none;
+        border: 3px solid var(--primary);
+    }
+}
+
+.song-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.song-artist {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.confidence-meter {
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.confidence-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Modern Song Card Styles */
+.modern-song-card {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.modern-song-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+    border-color: var(--primary);
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.status-validated {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--validated);
+    border: 1px solid var(--validated);
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--pending);
+    border: 1px solid var(--pending);
+}
+
+.status-not-found {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--not-found);
+    border: 1px solid var(--not-found);
+}
+
+/* Landing Page Styles */
+.landing-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.landing-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.landing-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.landing-input-container {
+    margin-bottom: 2rem;
+}
+
+.landing-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: var(--background);
+}
+
+.landing-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+}
+
+.landing-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 150px;
+}
+
+.landing-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+}
+
+/* Processing View Styles */
+.processing-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.progress-bar-container {
+    background: var(--background-secondary);
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 2rem 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.current-song {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* Results Grid */
+.results-grid {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+@media (min-width: 768px) {
+    .results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+}
+
+/* Song Thumbnail */
+.song-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--background-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+}
+
+/* Selection Interface */
+.selection-interface {
+    background: var(--background-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.selection-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.selection-option:hover {
+    border-color: var(--primary);
+    background: rgba(29, 185, 84, 0.05);
+}
+
+.selection-option.selected {
+    border-color: var(--primary);
+    background: rgba(29, 185, 84, 0.1);
+}
+
+/* Enhanced Authentication Page Styling */
+.auth-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--background-secondary);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-medium);
+}
+
+.auth-option {
+    padding: 1.5rem;
+    border: 2px solid var(--border);
+    border-radius: var(--border-radius);
+    background: var(--background);
+    transition: var(--transition-medium);
+    cursor: pointer;
+}
+
+.auth-option:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+.auth-option.primary {
+    border-color: var(--primary);
+    background: rgba(29, 185, 84, 0.05);
+}
+
+/* Playlist Creation Styling */
+.playlist-form {
+    background: var(--background-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius-large);
+    margin: 1rem 0;
+}
+
+.playlist-preview {
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.playlist-preview-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.playlist-preview-item:last-child {
+    border-bottom: none;
+}
+
+/* Enhanced Song Cards */
+.song-card {
+    background: var(--background-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin: 0.5rem 0;
+    transition: var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.song-card:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-1px);
+}
+
+.song-card.found {
+    border-left: 4px solid var(--success);
+}
+
+.song-card.pending {
+    border-left: 4px solid var(--warning);
+}
+
+.song-card.not-found {
+    border-left: 4px solid var(--error);
+}
+
+.song-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.song-card-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.song-card-artist {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.confidence-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.confidence-high {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+}
+
+.confidence-medium {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+
+.confidence-low {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error);
+}
+
+/* Album Art Styling */
+.album-art {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius);
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.album-art-placeholder {
+    width: 60px;
+    height: 60px;
+    background: var(--background-tertiary);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    margin-right: 1rem;
+}
+
+/* Loading States */
+.skeleton {
+    background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-light) 50%, var(--background-tertiary) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+    height: 1rem;
+    border-radius: 4px;
+    margin: 0.25rem 0;
+}
+
+.skeleton-title {
+    height: 1.25rem;
+    width: 70%;
+    border-radius: 4px;
+    margin: 0.25rem 0;
+}
+
+/* Interactive Elements */
+.interactive-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-weight: 500;
+}
+
+.interactive-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.interactive-button.secondary {
+    background: var(--background-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.interactive-button.secondary:hover {
+    background: var(--border-light);
+}
+
+/* Progress Indicators */
+.progress-container {
+    background: var(--background-secondary);
+    border-radius: var(--border-radius-large);
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.progress-ring {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+}
+
+.progress-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.progress-subtext {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
