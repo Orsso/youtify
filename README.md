@@ -137,6 +137,9 @@ The app features a **completely seamless OAuth flow** integrated directly into t
 - **Spotify Web API Credentials** - Free from Spotify Developer Dashboard
 
 ## ⚙️ Configuration
+## Configuration
+1. Copy `.streamlit/secrets.example.toml` to `.streamlit/secrets.toml`
+2. Fill in your actual API credentials
 
 The application uses environment variables for configuration. Copy `.env.example` to `.env` and fill in your credentials:
 
