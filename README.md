@@ -51,7 +51,8 @@ The setup script will:
 3. **Get API credentials**
    - **YouTube**: [Google Cloud Console](https://console.cloud.google.com/) → Enable YouTube Data API v3
    - **Spotify**: [Developer Dashboard](https://developer.spotify.com/dashboard/) → Create app
-     - ⚠️ **Important**: Add `http://localhost:8501` to your Spotify app's redirect URIs
+     - ⚠️ **Important**: Add `http://127.0.0.1:8501` to your Spotify app's redirect URIs
+     - The app now features **seamless OAuth** - no manual URL copying required!
 
 4. **Run the application**
    ```bash
@@ -78,11 +79,31 @@ The setup script will:
 7. **📋 Playlist Creation** - Automatically creates playlist in your Spotify account
 8. **📊 Detailed Reports** - Comprehensive analytics and export options
 
+## 🔐 Seamless OAuth Authentication
+
+The app features a **completely seamless OAuth flow** integrated directly into the main interface:
+
+### How It Works:
+1. **Enter YouTube URL** (optional) - Paste your playlist URL
+2. **Click "Connect Spotify & Convert"** - Single button click
+3. **Automatic Redirect** - Opens Spotify authorization page
+4. **Authorize the App** - Grant permissions on Spotify's page
+5. **Automatic Return** - Redirected back to the same page
+6. **Continue Seamlessly** - Proceeds with conversion automatically!
+
+### Key Features:
+- ✅ **Single-click authentication** - No separate pages or manual steps
+- ✅ **State preservation** - Your URL and progress are maintained
+- ✅ **Workflow continuity** - Seamless progression after authentication
+- ✅ **Professional experience** - Industry-standard OAuth 2.0 flow
+
 ## 🆕 What's New in v2.0
 
 ### 🔐 Enhanced Authentication
+- **Seamless OAuth Flow** - One-click authentication with automatic redirect handling
 - **Full Spotify OAuth Integration** - Secure authentication flow
 - **Automatic Token Management** - Handles token refresh automatically
+- **No Manual Steps** - No need to copy/paste URLs or authorization codes
 
 ### 🎯 Interactive Match Approval
 - **Pending Match Review** - Manually approve uncertain matches

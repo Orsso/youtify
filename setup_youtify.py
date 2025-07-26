@@ -83,7 +83,7 @@ def get_credentials():
     print("2. Spotify Web API Credentials:")
     print("   - Go to: https://developer.spotify.com/dashboard/")
     print("   - Create a new app")
-    print("   - Add redirect URI: http://localhost:8501")
+    print("   - Add redirect URI: http://127.0.0.1:8501")
     print("   - Copy Client ID and Client Secret")
     print()
     
