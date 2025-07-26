@@ -40,31 +40,35 @@ def install_dependencies():
         return False
 
 def setup_environment():
-    """Set up environment file"""
-    print("\n🔧 Setting up environment configuration...")
+    """Set up environment configuration"""
+    print("\n🔧 Setting up configuration...")
     
-    env_file = Path(".env")
-    env_example = Path(".env.example")
+    secrets_dir = Path(".streamlit")
+    secrets_example = secrets_dir / "secrets.example.toml"
+    secrets_file = secrets_dir / "secrets.toml"
     
-    if env_file.exists():
-        print("⚠️  .env file already exists")
+    # Create .streamlit directory if it doesn't exist
+    secrets_dir.mkdir(exist_ok=True)
+    
+    if secrets_file.exists():
+        print("⚠️  secrets.toml file already exists")
         response = input("Do you want to overwrite it? (y/N): ").lower()
         if response != 'y':
-            print("Keeping existing .env file")
+            print("Keeping existing secrets.toml file")
             return True
     
-    if not env_example.exists():
-        print("❌ .env.example file not found")
+    if not secrets_example.exists():
+        print("❌ secrets.example.toml file not found")
         return False
     
-    # Copy example to .env
+    # Copy example to secrets.toml
     try:
-        with open(env_example, 'r') as src, open(env_file, 'w') as dst:
+        with open(secrets_example, 'r') as src, open(secrets_file, 'w') as dst:
             dst.write(src.read())
-        print("✅ Created .env file from template")
+        print("✅ Created secrets.toml file from template")
         return True
     except Exception as e:
-        print(f"❌ Failed to create .env file: {e}")
+        print(f"❌ Failed to create secrets.toml file: {e}")
         return False
 
 def get_credentials():
@@ -94,15 +98,15 @@ def get_credentials():
     if setup_now == 'y':
         return configure_credentials()
     else:
-        print("📝 You can add credentials later by editing the .env file")
+        print("📝 You can add credentials later by editing the .streamlit/secrets.toml file")
         return True
 
 def configure_credentials():
     """Configure API credentials interactively"""
-    env_file = Path(".env")
+    secrets_file = Path(".streamlit/secrets.toml")
     
-    if not env_file.exists():
-        print("❌ .env file not found. Run setup first.")
+    if not secrets_file.exists():
+        print("❌ secrets.toml file not found. Run setup first.")
         return False
     
     print("\nEnter your API credentials:")
@@ -116,20 +120,24 @@ def configure_credentials():
         print("❌ All credentials are required")
         return False
     
-    # Update .env file
+    # Update secrets.toml file
     try:
-        with open(env_file, 'r') as f:
-            content = f.read()
+        with open(secrets_file, 'r') as f:
+            lines = f.readlines()
         
         # Replace placeholder values
-        content = content.replace('your_youtube_api_key_here', youtube_key)
-        content = content.replace('your_spotify_client_id_here', spotify_id)
-        content = content.replace('your_spotify_client_secret_here', spotify_secret)
+        for i, line in enumerate(lines):
+            if line.startswith('client_id ='):
+                lines[i] = f'client_id = "{spotify_id}"\n'
+            elif line.startswith('client_secret ='):
+                lines[i] = f'client_secret = "{spotify_secret}"\n'
+            elif line.startswith('api_key ='):
+                lines[i] = f'api_key = "{youtube_key}"\n'
         
-        with open(env_file, 'w') as f:
-            f.write(content)
+        with open(secrets_file, 'w') as f:
+            f.writelines(lines)
         
-        print("✅ Credentials saved to .env file")
+        print("✅ Credentials saved to secrets.toml file")
         return True
         
     except Exception as e:
@@ -144,31 +152,23 @@ def test_setup():
         # Try importing main modules
         import streamlit
         import requests
-        import pandas
-        from dotenv import load_dotenv
         
         print("✅ All dependencies imported successfully")
         
-        # Check if .env file exists and has credentials
-        env_file = Path(".env")
-        if env_file.exists():
-            load_dotenv()
+        # Check if secrets.toml file exists and has credentials
+        secrets_file = Path(".streamlit/secrets.toml")
+        if secrets_file.exists():
+            # Read the secrets file directly
+            with open(secrets_file, 'r') as f:
+                content = f.read()
             
-            youtube_key = os.getenv('YOUTUBE_API_KEY', '')
-            spotify_id = os.getenv('SPOTIFY_CLIENT_ID', '')
-            spotify_secret = os.getenv('SPOTIFY_CLIENT_SECRET', '')
-            
-            if youtube_key and youtube_key != 'your_youtube_api_key_here':
-                print("✅ YouTube API key configured")
+            # Check for credentials
+            if 'api_key = ' in content and 'client_id = ' in content and 'client_secret = ' in content:
+                print("✅ API credentials configured")
             else:
-                print("⚠️  YouTube API key not configured")
-            
-            if spotify_id and spotify_id != 'your_spotify_client_id_here':
-                print("✅ Spotify credentials configured")
-            else:
-                print("❌ Spotify credentials not configured - required for operation")
+                print("❌ API credentials not fully configured")
         else:
-            print("⚠️  .env file not found")
+            print("⚠️  secrets.toml file not found")
         
         return True
         
@@ -184,7 +184,7 @@ def print_next_steps():
     print("\n🚀 Setup Complete!")
     print()
     print("Next steps:")
-    print("1. Make sure your credentials are configured in .env")
+    print("1. Make sure your credentials are configured in .streamlit/secrets.toml")
     print("2. Run the application:")
     print("   streamlit run main.py")
     print()
