@@ -24,7 +24,7 @@ class ProperOAuthManager:
         """Check if user is authenticated"""
         return 'spotify_token' in st.session_state and st.session_state.spotify_token is not None
     
-    def get_auth_url(self, state_data: Dict = None) -> str:
+    def get_auth_url(self, state_data: Optional[Dict] = None) -> str:
         """Generate Spotify authorization URL with file-based state persistence"""
         base_url = "https://accounts.spotify.com/authorize"
         scope = "playlist-modify-public playlist-modify-private"
@@ -43,6 +43,9 @@ class ProperOAuthManager:
                 # Fallback to a basic token without state data
                 state_token = state_manager.generate_state_token()
         
+        # Log the redirect URI for debugging
+        print(f"DEBUG: Using redirect_uri in auth URL: {self.redirect_uri}")
+        
         params = {
             'client_id': self.client_id,
             'response_type': 'code',
@@ -55,7 +58,7 @@ class ProperOAuthManager:
         param_string = '&'.join([f"{k}={v}" for k, v in params.items()])
         return f"{base_url}?{param_string}"
     
-    def handle_oauth_callback(self, auth_code: str, state_param: str = None) -> bool:
+    def handle_oauth_callback(self, auth_code: str, state_param: Optional[str] = None) -> bool:
         """Handle OAuth callback and exchange code for token with file-based state restoration"""
         try:
             import requests

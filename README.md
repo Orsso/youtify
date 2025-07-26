@@ -51,7 +51,9 @@ The setup script will:
 3. **Get API credentials**
    - **YouTube**: [Google Cloud Console](https://console.cloud.google.com/) → Enable YouTube Data API v3
    - **Spotify**: [Developer Dashboard](https://developer.spotify.com/dashboard/) → Create app
-     - ⚠️ **Important**: Add `http://127.0.0.1:8501` to your Spotify app's redirect URIs
+     - ⚠️ **Important**:
+       - For local development: Add `http://127.0.0.1:8501` to your Spotify app's redirect URIs
+       - For production deployment: Add your app's URL (e.g., `https://your-app.streamlit.app/`) to redirect URIs
      - The app now features **seamless OAuth** - no manual URL copying required!
 
 4. **Run the application**
@@ -140,6 +142,14 @@ The app features a **completely seamless OAuth flow** integrated directly into t
 ## Configuration
 1. Copy `.streamlit/secrets.example.toml` to `.streamlit/secrets.toml`
 2. Fill in your actual API credentials
+
+For production deployments (e.g., Streamlit Cloud), you must also configure the redirect URI:
+```toml
+[spotify]
+client_id = "your_spotify_client_id"
+client_secret = "your_spotify_client_secret"
+redirect_uri = "https://your-app.streamlit.app/"  # Required for production
+```
 
 The application uses environment variables for configuration. Copy `.env.example` to `.env` and fill in your credentials:
 
