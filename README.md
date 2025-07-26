@@ -1,149 +1,92 @@
-# 🎵 Youtify
+# Youtify
 
-Transform any YouTube playlist into Spotify playlists with intelligent song matching and a beautiful, modern interface.
+Convert YouTube playlists to Spotify playlists with intelligent song matching.
 
-## ✨ Features
+## Features
 
-- **🎯 Smart Matching** - Advanced fuzzy matching algorithms for accurate song identification
-- **🔐 Spotify Integration** - Full OAuth authentication for playlist creation
-- **🎨 Modern UI** - Spotify-inspired dark theme with smooth animations
-- **📊 Interactive Results** - Accept/reject matches with preview functionality
-- **⚡ Real-time Progress** - Live progress tracking during conversion
-- **📱 Mobile-Friendly** - Responsive design that works on all devices
+- Smart song matching with confidence scoring
+- Spotify OAuth integration for playlist creation
+- Modern dark theme UI with responsive design
+- Audio previews for better matching decisions
+- CSV export options for match results
 
-- **📈 Detailed Analytics** - Confidence scores and match statistics
-- **🎧 Audio Previews** - 30-second preview clips for better matching decisions
-- **📋 Export Options** - CSV reports and Spotify URI lists
+## Quick Start
 
-## 🚀 Quick Start
+### Automated Setup (Recommended)
 
-### Option 1: Automated Setup (Recommended)
 ```bash
-# Clone the repository
 git clone https://github.com/Orsso/youtify-poc.git
 cd youtify-poc
-
-# Run the setup script
 python setup_youtify.py
 ```
 
 The setup script will:
-- ✅ Check Python version compatibility
-- 📦 Install all required dependencies
-- 🔧 Create configuration files
-- 🔑 Guide you through API credential setup
-- 🧪 Test your installation
+- Check Python version compatibility
+- Install dependencies
+- Guide you through API credential setup
 
-### Option 2: Manual Setup
-1. **Clone and install dependencies**
+### Manual Setup
+
+1. Clone and install dependencies:
    ```bash
    git clone https://github.com/Orsso/youtify-poc.git
    cd youtify-poc
    pip install -r requirements.txt
    ```
 
-2. **Configure credentials**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your API credentials
-   ```
+2. Configure credentials:
+   - Copy `.streamlit/secrets.example.toml` to `.streamlit/secrets.toml`
+   - Fill in your actual API credentials
 
-3. **Get API credentials**
-   - **YouTube**: [Google Cloud Console](https://console.cloud.google.com/) → Enable YouTube Data API v3
-   - **Spotify**: [Developer Dashboard](https://developer.spotify.com/dashboard/) → Create app
-     - ⚠️ **Important**:
-       - For local development: Add `http://127.0.0.1:8501` to your Spotify app's redirect URIs
-       - For production deployment: Add your app's URL (e.g., `https://your-app.streamlit.app/`) to redirect URIs
-     - The app now features **seamless OAuth** - no manual URL copying required!
+3. Get API credentials:
+   - YouTube: Enable YouTube Data API v3 in Google Cloud Console
+   - Spotify: Create an app in Spotify Developer Dashboard
+     - For local development: Add `http://127.0.0.1:8501/` to redirect URIs
+     - For production: Add your app's URL (e.g., `https://your-app.streamlit.app/`) to redirect URIs
 
-4. **Run the application**
+4. Run the application:
    ```bash
    streamlit run main.py
    ```
 
-2. **Configure credentials**
-   - Click "Start Full Mode" in the app
-   - Enter your API credentials
-   - Authorize with Spotify
-   - Create playlists directly in your account
+## How It Works
 
-## 🔄 How It Works
+1. URL Processing - Extracts playlist ID from YouTube URL
+2. Video Extraction - Fetches video titles and metadata using YouTube API
+3. Title Parsing - Identifies artist and song names
+4. Smart Search - Multi-strategy Spotify search for accurate matching
+5. Interactive Matching - Review and approve uncertain matches with audio previews
+6. Playlist Creation - Automatically creates playlist in your Spotify account
 
-1. **🔗 URL Processing** - Extracts playlist ID from YouTube URL
-2. **📹 Video Extraction** - Fetches all video titles and metadata using YouTube API
-3. **🎵 Title Parsing** - Intelligent parsing to identify artist and song names
-4. **🔍 Smart Search** - Multi-strategy Spotify search:
-   - Exact artist + song matching
-   - Fuzzy string matching for variations
-   - Fallback searches for maximum coverage
-5. **🎯 Interactive Matching** - Review and approve uncertain matches
-6. **🎧 Audio Previews** - Listen to 30-second clips before deciding
-7. **📋 Playlist Creation** - Automatically creates playlist in your Spotify account
-8. **📊 Detailed Reports** - Comprehensive analytics and export options
+## OAuth Authentication
 
-## 🔐 Seamless OAuth Authentication
+The app features seamless OAuth flow integrated directly into the main interface:
 
-The app features a **completely seamless OAuth flow** integrated directly into the main interface:
+1. Enter YouTube URL
+2. Click "Import to Spotify" 
+3. Authorize the app on Spotify's page
+4. Automatically redirected back to continue
 
-### How It Works:
-1. **Enter YouTube URL** (optional) - Paste your playlist URL
-2. **Click "Connect Spotify & Convert"** - Single button click
-3. **Automatic Redirect** - Opens Spotify authorization page
-4. **Authorize the App** - Grant permissions on Spotify's page
-5. **Automatic Return** - Redirected back to the same page
-6. **Continue Seamlessly** - Proceeds with conversion automatically!
+Key features:
+- Single-click authentication
+- State preservation during OAuth flow
+- No manual URL copying required
+- Industry-standard OAuth 2.0 flow
 
-### Key Features:
-- ✅ **Single-click authentication** - No separate pages or manual steps
-- ✅ **State preservation** - Your URL and progress are maintained
-- ✅ **Workflow continuity** - Seamless progression after authentication
-- ✅ **Professional experience** - Industry-standard OAuth 2.0 flow
-
-## 🆕 What's New in v2.0
-
-### 🔐 Enhanced Authentication
-- **Seamless OAuth Flow** - One-click authentication with automatic redirect handling
-- **Full Spotify OAuth Integration** - Secure authentication flow
-- **Automatic Token Management** - Handles token refresh automatically
-- **No Manual Steps** - No need to copy/paste URLs or authorization codes
-
-### 🎯 Interactive Match Approval
-- **Pending Match Review** - Manually approve uncertain matches
-- **Multiple Match Options** - Choose from several potential matches
-- **Audio Preview Integration** - Listen before deciding
-- **Manual Search** - Search for songs that weren't found automatically
-
-### 🎨 Modern UI/UX
-- **Spotify-Inspired Design** - Dark theme with green accents
-- **Smooth Animations** - Micro-interactions and transitions
-- **Album Artwork** - Visual song identification
-- **Loading States** - Skeleton screens and progress indicators
-- **Mobile Responsive** - Works perfectly on all devices
-
-### ⚡ Performance Improvements
-- **Real API Integration** - No more demo data limitations
-- **Rate Limiting** - Respects API quotas and limits
-- **Error Handling** - Graceful fallbacks and recovery
-- **Caching System** - Faster repeated operations
-
-### 📊 Enhanced Analytics
-- **Confidence Scoring** - Know how certain each match is
-- **Match Statistics** - Detailed conversion metrics
-- **Export Options** - CSV reports and Spotify URI lists
-- **Processing Insights** - See exactly what happened
-
-## 📋 Requirements
-
-- **Python 3.8+** - Modern Python version
-- **YouTube Data API v3 Key** - Free from Google Cloud Console
-- **Spotify Web API Credentials** - Free from Spotify Developer Dashboard
-
-## ⚙️ Configuration
 ## Configuration
-1. Copy `.streamlit/secrets.example.toml` to `.streamlit/secrets.toml`
-2. Fill in your actual API credentials
 
-For production deployments (e.g., Streamlit Cloud), you must also configure the redirect URI:
+Copy `.streamlit/secrets.example.toml` to `.streamlit/secrets.toml` and fill in your actual API credentials:
+
+```toml
+[spotify]
+client_id = "your_spotify_client_id"
+client_secret = "your_spotify_client_secret"
+
+[youtube]
+api_key = "your_youtube_api_key"
+```
+
+For production deployments (e.g., Streamlit Cloud), configure the redirect URI:
 ```toml
 [spotify]
 client_id = "your_spotify_client_id"
@@ -151,21 +94,12 @@ client_secret = "your_spotify_client_secret"
 redirect_uri = "https://your-app.streamlit.app/"  # Required for production
 ```
 
-The application uses environment variables for configuration. Copy `.env.example` to `.env` and fill in your credentials:
+## Requirements
 
-```env
-# Required API Credentials
-YOUTUBE_API_KEY=your_youtube_api_key_here
-SPOTIFY_CLIENT_ID=your_spotify_client_id_here
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
-
-# Optional Settings
-HIGH_CONFIDENCE_THRESHOLD=0.8
-MEDIUM_CONFIDENCE_THRESHOLD=0.5
-LOW_CONFIDENCE_THRESHOLD=0.3
-```
+- Python 3.8+
+- YouTube Data API v3 Key
+- Spotify Web API Credentials
 
 ## License
 
 MIT License - see LICENSE file for details.
-# youtube-to-spotify
