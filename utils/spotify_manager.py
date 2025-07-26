@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 class SpotifyManager:
     """Handles Spotify Web API operations"""
 
-    def __init__(self, client_id: str, client_secret: str, user_id: str = "", 
-                 redirect_uri: str = "http://localhost:8501"):
+    def __init__(self, client_id: str, client_secret: str, user_id: str = "",
+                 redirect_uri: str = "http://127.0.0.1:8501"):
         self.client_id = client_id
         self.client_secret = client_secret
         self.user_id = user_id

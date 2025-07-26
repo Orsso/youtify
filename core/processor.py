@@ -15,11 +15,13 @@ class PlaylistProcessor:
     """Main processor for converting YouTube playlists to Spotify format"""
 
     def __init__(self):
-        # Initialize API managers - require valid credentials
-        if not self._validate_credentials():
-            raise ValueError("Missing required API credentials. Please check your .env file.")
+        # Initialize YouTube extractor (always required)
+        if not Config.YOUTUBE_API_KEY:
+            raise ValueError("Missing YouTube API key. Please check your .env file.")
 
         self.youtube_extractor = YouTubeExtractor(Config.YOUTUBE_API_KEY)
+
+        # Initialize Spotify manager (optional - depends on authentication)
         self.spotify_manager = self._get_spotify_manager()
 
     def _validate_credentials(self) -> bool:
@@ -36,10 +38,29 @@ class PlaylistProcessor:
         return False
 
     def _get_spotify_manager(self) -> Optional[SpotifyManager]:
-        """Get the Spotify manager"""
+        """Get the Spotify manager - try user auth first, fallback to client credentials"""
+        # First try to get authenticated user manager (for playlist creation)
         if 'auth_manager' in st.session_state:
-            return st.session_state.auth_manager.get_spotify_manager()
-        return None
+            auth_manager = st.session_state.auth_manager
+            if auth_manager.is_authenticated('full'):
+                return auth_manager.get_spotify_manager()
+
+        # Fallback to client credentials for search-only operations
+        try:
+            from utils.spotify_manager import SpotifyManager
+            spotify_manager = SpotifyManager(
+                Config.SPOTIFY_CLIENT_ID,
+                Config.SPOTIFY_CLIENT_SECRET
+            )
+
+            if spotify_manager.authenticate_client_credentials():
+                return spotify_manager
+            else:
+                return None
+
+        except Exception as e:
+            st.warning(f"Failed to create client credentials manager: {str(e)}")
+            return None
     
     def process_playlist(self, youtube_url: str, progress_callback: Optional[Callable] = None) -> List[Dict]:
         """
@@ -112,14 +133,87 @@ class PlaylistProcessor:
             st.error(f"API error occurred: {str(e)}")
             raise ValueError(f"Failed to process playlist: {str(e)}")
 
+    def process_playlist_with_data(self, playlist_data: Dict,
+                                 progress_callback: Optional[Callable[[int, int, str], None]] = None) -> List[Dict[str, str]]:
+        """
+        Process playlist using pre-parsed playlist data
+
+        Args:
+            playlist_data: Pre-parsed playlist data containing songs list
+            progress_callback: Function to call with progress updates (current, total, song_name)
+
+        Returns:
+            List of song dictionaries with match results
+        """
+        try:
+            videos = playlist_data.get('songs', [])
+            if not videos:
+                raise ValueError("No songs found in playlist data")
+
+            results = []
+            total_videos = len(videos)
+
+            for i, video in enumerate(videos):
+                # Update progress
+                if progress_callback:
+                    progress_callback(i, total_videos, f"Processing: {video['title']}")
+
+                # Parse song info
+                parsed = self._parse_video_title(video['title'])
+
+                # Search for song on Spotify
+                spotify_result = self._search_spotify(parsed['artist'], parsed['title'])
+
+                # Store result
+                result = {
+                    'youtube_title': video['title'],
+                    'youtube_channel': video['channel'],
+                    'parsed_artist': parsed['artist'],
+                    'parsed_title': parsed['title'],
+                    'found': spotify_result is not None,
+                    'video_id': video.get('video_id', ''),
+                    'published': video.get('published', '')
+                }
+
+                if spotify_result:
+                    result.update({
+                        'spotify_id': spotify_result['id'],
+                        'spotify_uri': spotify_result['uri'],
+                        'spotify_artist': spotify_result['artists'][0]['name'],
+                        'spotify_title': spotify_result['name'],
+                        'confidence': self._calculate_confidence(parsed, spotify_result)
+                    })
+                else:
+                    result['reason'] = 'No match found on Spotify'
+
+                results.append(result)
+
+                # Small delay for rate limiting
+                time.sleep(Config.PROCESSING_DELAY_MS / 1000.0)
+
+            # Final progress update
+            if progress_callback:
+                progress_callback(total_videos, total_videos, "Processing complete!")
+
+            return results
+
+        except Exception as e:
+            # Show error to user
+            st.error(f"API error occurred: {str(e)}")
+            raise ValueError(f"Failed to process playlist: {str(e)}")
 
     def _parse_video_title(self, title: str) -> Dict[str, str]:
         """Parse video title to extract artist and song name"""
-        # Common patterns for YouTube music videos
+
+
+        # Common patterns for YouTube music videos (improved to handle hyphenated names)
         patterns = [
-            r'^(.+?)\s*[-–—]\s*(.+?)(?:\s*\(.*\))?(?:\s*\[.*\])?$',  # Artist - Song
+            # Pattern for "Artist - Song" but avoid splitting on hyphens within words
+            r'^(.+?)\s+[-–—]\s+(.+?)(?:\s*\(.*\))?(?:\s*\[.*\])?$',  # Artist - Song (with spaces around dash)
             r'^(.+?)\s*[:|]\s*(.+?)(?:\s*\(.*\))?(?:\s*\[.*\])?$',   # Artist : Song
             r'^(.+?)\s*"(.+?)"',  # Artist "Song"
+            # Fallback: if there's a dash with spaces, split there
+            r'^(.+?)\s+-\s+(.+?)(?:\s*\(.*\))?(?:\s*\[.*\])?$',  # Artist - Song (fallback)
         ]
 
         for pattern in patterns:
@@ -134,9 +228,11 @@ class PlaylistProcessor:
                     song = song.replace(suffix, '').strip()
                     artist = artist.replace(suffix, '').strip()
 
+
                 return {'artist': artist, 'title': song}
 
         # If no pattern matches, return the title as song name
+
         return {'artist': '', 'title': title}
 
     def _find_spotify_match(self, artist: str, title: str) -> Optional[Dict]:
@@ -182,3 +278,5 @@ class PlaylistProcessor:
         except Exception as e:
             st.warning(f"Spotify search error: {str(e)}")
             return None
+
+
