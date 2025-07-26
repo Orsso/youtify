@@ -10,11 +10,11 @@ import time
 import logging
 from pathlib import Path
 
-# Import consolidated UI components
-from ui.components import (
-    render_header, render_landing_page, render_processing_page,
-    render_playlist_creation_page
-)
+# Import UI components
+from ui.header import render_header
+from ui.conversion.landing import render_landing_page
+from ui.processing import render_processing_page
+from ui.playlist.creation import render_playlist_creation_page
 from core.processor import PlaylistProcessor
 from utils.session import initialize_session, get_session_state, set_session_state
 from utils.proper_oauth_manager import ProperOAuthManager
@@ -178,7 +178,7 @@ def main():
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
                 if st.button("Convert Another"):
-                    from ui.components import _reset_conversion_state
+                    from ui.conversion.preview import _reset_conversion_state
                     _reset_conversion_state()
                     st.rerun()
         else:
