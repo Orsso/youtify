@@ -182,9 +182,21 @@ class ProperOAuthManager:
             outline: none !important;
         }}
         </style>
-        <a href="{auth_url}" target="_self" class="spotify-auth-button">
+        <a href="{auth_url}" target="_blank" class="spotify-auth-button" id="spotify-auth-link">
             <button type="button">{button_text}</button>
         </a>
+        <script>
+        // Add click handler to ensure the link opens properly
+        document.addEventListener('DOMContentLoaded', function() {{
+            var link = document.getElementById('spotify-auth-link');
+            if (link) {{
+                link.addEventListener('click', function(e) {{
+                    e.preventDefault();
+                    window.open(this.href, '_blank');
+                }});
+            }}
+        }});
+        </script>
         """, unsafe_allow_html=True)
     
     def clear_authentication(self):
