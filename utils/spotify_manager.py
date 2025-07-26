@@ -8,6 +8,7 @@ import time
 import logging
 from typing import List, Dict, Optional, Callable
 import requests
+from urllib.parse import quote
 
 logger = logging.getLogger(__name__)
 
@@ -15,11 +16,13 @@ class SpotifyManager:
     """Handles Spotify Web API operations"""
 
     def __init__(self, client_id: str, client_secret: str, user_id: str = "",
-                 redirect_uri: str = "http://127.0.0.1:8501"):
+                 redirect_uri: Optional[str] = None):
         self.client_id = client_id
         self.client_secret = client_secret
         self.user_id = user_id
-        self.redirect_uri = redirect_uri
+        # Use provided redirect_uri or fall back to Config value
+        from config import Config
+        self.redirect_uri = redirect_uri or Config.SPOTIFY_REDIRECT_URI
         self.access_token = None
         self.token_type = None  # 'authorization_code' or 'client_credentials'
         self.base_url = "https://api.spotify.com/v1"
@@ -58,7 +61,7 @@ class SpotifyManager:
             logger.error(f"Client credentials authentication failed: {e}")
             return False
     
-    def get_authorization_url(self, state: str = None) -> str:
+    def get_authorization_url(self, state: Optional[str] = None) -> str:
         """
         Get authorization URL for OAuth flow
         Used for full mode where user needs to grant permissions.
@@ -77,7 +80,7 @@ class SpotifyManager:
         if state:
             params['state'] = state
         
-        query_string = '&'.join([f"{k}={requests.utils.quote(str(v))}" for k, v in params.items()])
+        query_string = '&'.join([f"{k}={quote(str(v))}" for k, v in params.items()])
         return f"{auth_url}?{query_string}"
     
     def exchange_code_for_token(self, code: str) -> bool:
