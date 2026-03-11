@@ -8,8 +8,8 @@ Convert YouTube playlists to Spotify playlists with intelligent song matching.
 
 1. Clone and install:
    ```bash
-   git clone https://github.com/Orsso/youtify-poc.git
-   cd youtify-poc
+   git clone https://github.com/Orsso/youtify.git
+   cd youtify
    pip install -r requirements.txt
    ```
 
